@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import Hero from "../Components/Navber/Hero/Hero";
 import Doctors from "../Components/Doctors/Doctors";
 import CardCounter from "../Components/CardCounter/CardCounter";
@@ -11,30 +11,62 @@ const Home = () => {
   // console.log(doctors)
   // ***************************************************************** */
   //handiling search
-  const [value, setValue] = useState("");
-  const [paseedDoctor, setPaseedDoctor] = useState([]);
-  const handleSearch = (e) => {
-    e.preventDefault();
-    setValue(e.target.name.value);
+  const [sendDoctor,setSendDoctor]=useState([])
 
-    if (!isNaN(parseInt(value))) {
-      const searchingDoctor = doctors.filter((doctor) =>
-        console.log(doctor.fee === parseInt(value))
+  const [paseedDoctor, setPaseedDoctor] = useState([]);
+  const [value, setValue] = useState("");
+  const handleSearch = (e) => {
+    console.log(value);
+    e.preventDefault();
+    if (!isNaN(parseInt(value)) || value) {
+      const searchingDoctor = doctors.filter(
+        (doctor) =>
+          doctor.fee === parseInt(value) ||
+          doctor.name?.toLowerCase().trim() === value.toLowerCase().trim() ||
+          doctor.name.split(" ")[1]?.toLowerCase().trim() ===
+            value.toLowerCase().trim() ||
+          doctor.education?.split(",")[0].toLowerCase().trim() ===
+            value.toLowerCase().trim() ||
+          doctor.education.split(" ")[1]?.toLowerCase().trim() ===
+            value.toLowerCase().trim() ||
+          doctor.speciality.split(" ")[0]?.toLowerCase().trim() ===
+            value.toLowerCase().trim() ||
+          doctor.speciality.split(" ")[1]?.toLowerCase().trim() ===
+            value.toLowerCase().trim() ||
+          doctor.speciality.split(" ")[2]?.toLowerCase().trim() ===
+            value.toLowerCase().trim()
       );
       setPaseedDoctor(searchingDoctor);
     } else {
-      return [];
+      setPaseedDoctor([]);
     }
+    setValue("");
   };
-  console.log(paseedDoctor);
-//******************************************************************************* */
+  // console.log(paseedDoctor);
+  useEffect(()=>{
+    if(paseedDoctor.length>0){
+      setSendDoctor(paseedDoctor)
+    }
+    else{
+      setSendDoctor(doctors)
+    }
+  },[paseedDoctor])
+  //******************************************************************************* */
   return (
     <>
       <Helmet>
         <title>Docly|HomePage</title>
       </Helmet>
       <HomeDataContext.Provider
-        value={{ medical_services, doctors, banner_img, handleSearch, value }}
+        value={{
+          medical_services,
+          doctors,
+          banner_img,
+          handleSearch,
+          value,
+          setValue,
+          sendDoctor
+        }}
       >
         <div className=" max-w-[1500px] mx-auto">
           <Hero></Hero>

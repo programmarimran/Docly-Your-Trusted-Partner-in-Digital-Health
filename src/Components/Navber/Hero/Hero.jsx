@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import { HomeDataContext } from "../../../Pages/Home";
 
 const Hero = () => {
-  const { banner_img, handleSearch, value } = useContext(HomeDataContext);
+  const { banner_img, handleSearch, value ,setValue} = useContext(HomeDataContext);
 
   return (
     <div className="py-8 bg-base-200 border-4 rounded-2xl border-white  flex md:flex-col flex-col-reverse">
@@ -21,9 +21,10 @@ const Hero = () => {
           <input
             className="input rounded-full w-100% mb-4"
             type="text"
-            defaultValue={value}
+            value={value}
+            onChange={(e)=>setValue(e.target.value)}
             name="name"
-            placeholder="Text here..taka"
+            placeholder="Text here search All"
           />
           <input
             className="btn bg-[#176AE5] text-white rounded-full mb-4"

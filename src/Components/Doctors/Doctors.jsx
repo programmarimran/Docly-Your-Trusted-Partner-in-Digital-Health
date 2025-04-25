@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Doctor from "../Navber/Doctor/Doctor";
+import { HomeDataContext } from "../../Pages/Home";
 
-const Doctors = ({doctors}) => {
+const Doctors = () => {
+  const {sendDoctor}=useContext(HomeDataContext)
+  console.log(sendDoctor)
+  const doctors=sendDoctor
   const [showAll,setShowAll]=useState(false);
   const [showDoctors,setShowDoctors]=useState([]);
   const handleShowAllButton=()=>{
@@ -12,7 +16,7 @@ const Doctors = ({doctors}) => {
     setShowDoctors(showDoctorsData)
     // !showAll&&window.scrollTo(0,0)
     !showAll&&window.scrollTo({top: 0, behavior: "smooth"});
-  },[showAll])
+  },[showAll,doctors])
 
 //  console.log(doctors)
   return (
